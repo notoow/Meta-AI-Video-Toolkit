@@ -31,19 +31,31 @@ Stop juggling multiple repositories. We bring them all together.
 | **Footage Gen** | **Make-A-Video** | Text-to-Video Generation | *Planned* |
 | **Quality Check** | **MovieGen Bench** | Automated Output Quality Scoring | *Integrated* |
 
-## Installation
+## Installation & Usage
 
-### Option A: For End-Users (Local Mode)
-1.  Run `install_plugin.bat` to install the Premiere Pro extension.
-2.  Run `start_pakuri_ai.bat` to launch the AI Engine locally.
-3.  Open Premiere Pro -> Window -> Extensions -> **Smart Selector**.
+### 0. Prerequisite: Install Plugin (First Time Only)
+1.  Double-click `install_plugin.bat` to register the plugin with Adobe Premiere Pro.
+2.  (Optional) If you get a "Player Debug Mode" warning, the script handles this, but you may need to restart Premiere Pro.
 
-### Option B: For Enterprise (Central Server)
-1.  Deploy this repo on a GPU Server using `docker-compose up -d`.
-2.  Distribute the `smart-selector-plugin` folder to client workstations.
-3.  Configure plugins to point to the server IP.
+### Option A: Docker Mode (Recommended) 🚀
+*The easiest way to run the AI Server without installing Python/CUDA manually.*
 
-## ⚖️ License & Commercial Use
+1.  Open a terminal in this folder.
+2.  Run:
+    ```bash
+    docker compose up
+    ```
+    *(Wait until you see `Uvicorn running on http://0.0.0.0:8000`)*.
+3.  Open Premiere Pro ➡️ **Window** ➡️ **Extensions** ➡️ **Smart Selector**.
+
+### Option B: Local Python Mode (Advanced)
+*If you prefer running directly on your host machine.*
+
+1.  Make sure you have Python 3.10 installed.
+2.  Run `install_deps.bat` (or manually create `.venv` and install requirements).
+3.  Run `start_pakuri_ai.bat`.
+
+## License & Commercial Use
 
 > **⚠️ IMPORTANT**: This repository contains code and weights from various Meta Research projects, each with its own license.
 
