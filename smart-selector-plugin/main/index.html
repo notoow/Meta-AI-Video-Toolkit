@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Selector (Internal)</title>
+    <style>
+        body {
+            background-color: #232323;
+            color: #ccc;
+            font-family: 'Adobe Clean', sans-serif;
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Security Warning Banner */
+        .warning-banner {
+            background-color: #ff9800;
+            /* ORANGE for Update Verification */
+            color: black;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #e65100;
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(255, 152, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+            }
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background-color: #333;
+            border: 1px solid #444;
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+
+        button {
+            background-color: #0265dc;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #005bc5;
+        }
+
+        button:disabled {
+            background-color: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .log-area {
+            margin-top: auto;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 11px;
+            height: 100px;
+            overflow-y: auto;
+            color: #888;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+        }
+
+        .log-success {
+            color: #4caf50;
+        }
+
+        .log-error {
+            color: #f44336;
+        }
+
+        .watermark {
+            text-align: center;
+            font-size: 10px;
+            color: #555;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="warning-banner">
+        ⚠️ INTERNAL USE ONLY<br>
+        PROPRIETARY SAM 3 TECHNOLOGY
+    </div>
+
+    <div class="input-group">
+        <label for="prompt">What to segment?</label>
+        <input type="text" id="prompt" placeholder="e.g. 'person in red shirt', 'car', 'dog'..." />
+    </div>
+
+    <button id="btn-segment" onclick="startSegmentation()">
+        MAGICAL SEGMENTATION (SAM 3)
+    </button>
+
+    <div id="logs" class="log-area">
+        <div class="log-entry">System ready. Waiting for input...</div>
+    </div>
+
+    <div class="watermark">
+        Pakuri Internal Tools v1.0 (Confidential)
+    </div>
+
+    <!-- STANDARD ADOBE CEP LIBRARY -->
+    <!-- STANDARD ADOBE CEP LIBRARY -->
+    <!-- HYBRID LOADER: The Ultimate Fail-safe -->
+    <script>
+        const LOG_AREA = document.getElementById('logs');
+        function failSafeLog(msg) {
+            console.log(msg);
+            if (LOG_AREA) {
+                const d = document.createElement('div');
+                d.className = 'log-entry';
+                d.style.color = '#ffeb3b'; // Yellow for system logs
+                d.innerText = "[Loader] " + msg;
+                LOG_AREA.appendChild(d);
+            }
+        }
+
+        // Attempt 1: Node.js Require (Absolute)
+        if (typeof require !== 'undefined') {
+            try {
+                window.CSInterface = require(__dirname + '/CSInterface.js');
+                failSafeLog("Strategy 1 (Require Absolute) success.");
+            } catch (e1) {
+                failSafeLog("Strategy 1 failed: " + e1.message);
+                // Attempt 2: Node.js Require (Relative)
+                try {
+                    window.CSInterface = require('./CSInterface.js');
+                    failSafeLog("Strategy 2 (Require Relative) success.");
+                } catch (e2) {
+                    failSafeLog("Strategy 2 failed: " + e2.message);
+                }
+            }
+        }
+
+        // Attempt 3: Classic Script Tag Injection (Fallback)
+        if (typeof window.CSInterface === 'undefined') {
+            failSafeLog("Strategies 1 & 2 failed. Trying Strategy 3 (Script Tag Injection)...");
+
+            // Temporary variable to detect load
+            window.__cep_loaded = false;
+
+            var script = document.createElement('script');
+            script.src = "CSInterface.js";
+            script.onload = function () {
+                failSafeLog("Strategy 3 (Script Tag) loaded file.");
+                if (typeof CSInterface !== 'undefined') failSafeLog("Strategy 3 success: CSInterface exists.");
+            };
+            document.body.appendChild(script);
+        }
+    </script>
+
+    <script>
+        const BTN = document.getElementById('btn-segment');
+        let csInterface;
+
+        function log(msg, type = '') {
+            const div = document.createElement('div');
+            div.className = `log-entry ${type}`;
+            div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            console.log(msg);
+            if (LOG_AREA) {
+                LOG_AREA.appendChild(div);
+                LOG_AREA.scrollTop = LOG_AREA.scrollHeight;
+            }
+        }
+
+        window.onload = function () {
+            // Give Strategy 3 a moment to load if needed
+            setTimeout(function () {
+                try {
+                    // Final Check
+                    if (typeof CSInterface === 'undefined') {
+                        // Last ditch: check module.exports one more time
+                        if (typeof module !== 'undefined' && module.exports && (module.exports.THEME_COLOR_CHANGED_EVENT || typeof module.exports === 'function')) {
+                            window.CSInterface = module.exports;
+                            failSafeLog("Strategy 4 (Late Module.exports) success.");
+                        }
+                    }
+
+                    if (typeof CSInterface === 'undefined') {
+                        throw new Error("ALL Strategies failed. CSInterface.js is ghosting us.");
+                    }
+
+                    csInterface = new CSInterface();
+                    log("✅ CEP Interface Finally Loaded.", "log-success");
+
+                    // Test Connection
+                    csInterface.evalScript('$._PPP_.ping()', function (res) {
+                        if (res && (res === 'pong' || res.indexOf('pong') !== -1)) {
+                            log("✅ JSX Bridge Connected.", "log-success");
+                        } else {
+                            log("⚠️ JSX Bridge Response: " + res, "log-error");
+                        }
+                    });
+                } catch (e) {
+                    log("❌ FATAL: " + e, "log-error");
+
+                    // FALLBACK MOCK FOR browser testing
+                    if (window.location.protocol.indexOf("http") == -1) {
+                        log("⚠️ Trying Mock mode...", "log-error");
+                        // Mock minimal interface
+                        csInterface = {
+                            evalScript: function (s, cb) {
+                                log("[Mock] " + s);
+                                if (cb) setTimeout(() => cb("pong-mock"), 500);
+                            }
+                        };
+                    }
+                }
+            }, 500); // Wait 500ms for Strategy 3
+        };
+
+        async function startSegmentation() {
+            const prompt = document.getElementById('prompt').value;
+            if (!prompt) {
+                log("Please enter a text prompt.", "log-error");
+                return;
+            }
+
+            log(`Initiating SAM 3 segmentation for: "${prompt}"...`);
+            BTN.disabled = true;
+
+            if (!csInterface) {
+                log("Error: CSInterface not initialized.", "log-error");
+                BTN.disabled = false;
+                return;
+            }
+
+            // 1. Get Clip Info from Premiere
+            log("Reading Source Clip info...");
+            csInterface.evalScript('$._PPP_.exportCurrentSelection()', async function (jsonResult) {
+                log("Premiere Clip Info: " + jsonResult);
+
+                let clipData;
+                try {
+                    clipData = JSON.parse(jsonResult);
+                } catch (e) {
+                    log("Error parsing clip data: " + jsonResult, "log-error");
+                    BTN.disabled = false;
+                    return;
+                }
+
+                if (clipData.error) {
+                    log("Premiere Error: " + clipData.error, "log-error");
+                    BTN.disabled = false;
+                    return;
+                }
+
+                log(`Source: ${clipData.path}`);
+                log(`Range: ${clipData.inPoint}s (In) for ${clipData.duration}s`);
+
+                // 2. Call Local API
+                log("Sending to AI Server (Local Zero-Copy)...");
+
+                try {
+                    const response = await fetch('http://localhost:8000/segment/local_file', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            file_path: clipData.path,
+                            prompt: prompt,
+                            in_point: clipData.inPoint,
+                            duration: clipData.duration
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Server Error: ${response.status} ${response.statusText}`);
+                    }
+
+                    log("AI Processing Complete. Downloading result...");
+
+                    // 3. Save Result (Node.js)
+                    const blob = await response.blob();
+                    const arrayBuffer = await blob.arrayBuffer();
+                    const buffer = window.Buffer.from(arrayBuffer); // Requires Node integration
+
+                    const fs = require('fs');
+                    const path = require('path');
+                    // Save to user Temp folder
+                    const tempDir = process.env.TEMP || process.env.TMP || '.';
+                    const savePath = path.join(tempDir, `pakuri_matte_${Date.now()}.mov`);
+
+                    fs.writeFileSync(savePath, buffer);
+                    log(`Saved result to: ${savePath}`, "log-success");
+
+                    // 4. Import back to Premiere
+                    log("Importing to timeline (Overlay)...");
+
+                    // Escape path for ExtendScript
+                    const safePath = savePath.replace(/\\/g, "\\\\");
+
+                    csInterface.evalScript(`$._PPP_.importAndPlace('${safePath}', ${clipData.startTime})`, function (res) {
+                        if (res === "true") {
+                            log("✅ Done! Matte placed on timeline.", "log-success");
+                        } else {
+                            log("⚠️ Import failed or no timeline active.", "log-error");
+                        }
+                        BTN.disabled = false;
+                    });
+
+                } catch (err) {
+                    log("API Error: " + err.message, "log-error");
+                    BTN.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

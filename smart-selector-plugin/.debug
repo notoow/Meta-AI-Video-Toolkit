@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionList>
+  <Extension Id="com.pluginplay.copy-pasta.main">
+    <HostList>
+      <Host Name="AEFT" Port="8860"/>
+      <Host Name="PPRO" Port="8861"/>
+    </HostList>
+  </Extension>
+  <Extension Id="com.pluginplay.copy-pasta.licensing">
+    <HostList>
+      <Host Name="AEFT" Port="8862"/>
+      <Host Name="PPRO" Port="8863"/>
+    </HostList>
+  </Extension>
+</ExtensionList>

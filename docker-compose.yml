@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  pakuri-ai:
+    build: .
+    container_name: pakuri-ai-server
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount the current directory for live editing (optional for dev)
+      - .:/app
+      # Exclude heavy folders from being mounted over
+      - /app/.venv
+      - /app/__pycache__
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    restart: unless-stopped
+    command: python -m uvicorn api_server:app --host 0.0.0.0 --port 8000
