@@ -5,26 +5,16 @@ echo        PAKURI AI SERVER (SAM 3) - NATIVE STARTUP
 echo ========================================================
 echo.
 
-:: 1. Check Python
-echo [1/3] Checking Python...
-python --version 2>nul
-if %errorlevel% neq 0 (
-    echo [WARNING] 'python' command not found.
-    echo Trying 'py' launcher...
-    py --version 2>nul
-    if %errorlevel% neq 0 (
-        echo [ERROR] Python not found via 'python' or 'py'.
-        echo We will attempt to run anyway, but it will likely fail.
-        echo Please ensure Python 3.10+ is installed and added to PATH.
-    ) else (
-        echo [OK] Python found via 'py'.
-        set PYTHON_CMD=py
-    )
+:: 1. Force Virtual Environment (.venv) - SIMPLE MODE
+echo [1/3] Setting Python Environment...
+if exist ".\.venv\Scripts\python.exe" (
+    echo [OK] Found .venv locally.
+    set PYTHON_CMD=.\.venv\Scripts\python.exe
 ) else (
-    echo [OK] Python found.
-    set PYTHON_CMD=python
+    echo [ERROR] .venv not found at .\.venv\Scripts\python.exe
+    pause
+    exit /b
 )
-if not defined PYTHON_CMD set PYTHON_CMD=python
 
 :: 2. Install Dependencies
 echo.

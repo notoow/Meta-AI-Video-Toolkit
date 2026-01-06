@@ -29,29 +29,14 @@ RUN python -m pip install --no-cache-dir \
     --index-url https://download.pytorch.org/whl/cu118
 
 # 2. Install Other Deps (Default PyPI)
+# 2. Install Other Deps (Default PyPI)
+# Added huggingface_hub for auto-downloading SAM3 checkpoints
 RUN python -m pip install --no-cache-dir \
     fastapi uvicorn opencv-python numpy \
-    hydra-core iopath fvcore omegaconf pycocotools timm \
+    hydra-core iopath fvcore omegaconf pycocotools "timm>=1.0.17" \
     einops matplotlib scipy \
     psutil av ftfy regex pandas \
-    decord python-multipart
-
-# Copy requirements (if you have one, otherwise we install manually)
-# COPY requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# Install Python Dependencies (SAM 3 & FastAPI)
-# Note: We install torch explicitly to ensure compatibility, 
-# although the base image already has it (but we need 2.1+ for SAM 3 if strict)
-# Here we stick to the base image's torch if possible, or upgrade if needed.
-# SAM 3 requires recent torch. Let's upgrade to 2.5.1 as per our battle testing.
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir \
-    torch==2.5.1 torchvision==0.20.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cu118 \
-    fastapi uvicorn opencv-python numpy \
-    hydra-core iopath fvcore omegaconf pycocotools timm \
-    einops matplotlib scipy \
-    psutil av ftfy regex pandas
+    decord python-multipart huggingface_hub
 
 # Copy the rest of the application
 COPY . .
