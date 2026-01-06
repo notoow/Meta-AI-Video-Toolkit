@@ -1,14 +1,15 @@
-# Base Image: Python 3.10 with CUDA 11.8 (Official PyTorch Image)
-FROM pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+# Base Image: Python 3.10 Slim (Reliable & Lightweight)
+FROM python:3.10-slim
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies (OpenCV, etc.)
+# Install system dependencies (OpenCV, git, etc.)
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libglib2.0-0 \
     git \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements (if you have one, otherwise we install manually)
