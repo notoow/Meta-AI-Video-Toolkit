@@ -8,30 +8,30 @@
 
 ---
 
-## 🚀 Overview
+## Overview
 
 **Meta AI Video Toolkit** is a comprehensive open-source framework that integrates Meta's most powerful AI models into a unified workflow for video creators and developers. It provides a seamless bridge between advanced AI research and practical video editing tools like **Adobe Premiere Pro**.
 
 Stop juggling multiple repositories. We bring them all together.
 
-## ✨ Key Features
+## Key Features
 
-*   **🎬 Smart Segmentation (SAM 3)**: Instantly separate objects from video backgrounds with text prompts or clicks. (Auto-Rotoscoping)
-*   **🎵 GenAI Audio (AudioCraft)**: Generate royalty-free background music (`MusicGen`) and sound effects (`AudioGen`) that perfectly match your scene.
-*   **🎞️ AI Footage Generation (Make-A-Video)**: Create B-roll and fill-in footage from text descriptions when you run out of shots.
-*   **🔌 Premiere Pro Integration**: Includes a production-ready **Adobe Premiere Pro Panel** to run AI tasks directly from your timeline.
-*   **🐳 One-Click Deployment**: Dockerized backend ensures valid environment setup with GPU acceleration out of the box.
+*   **Smart Segmentation (SAM 3)**: Instantly separate objects from video backgrounds with text prompts or clicks. (Auto-Rotoscoping)
+*   **GenAI Audio (AudioCraft)**: Generate royalty-free background music (`MusicGen`) and sound effects (`AudioGen`) that perfectly match your scene.
+*   **AI Footage Generation (Make-A-Video)**: Create B-roll and fill-in footage from text descriptions when you run out of shots.
+*   **Premiere Pro Integration**: Includes a production-ready **Adobe Premiere Pro Panel** to run AI tasks directly from your timeline.
+*   **One-Click Deployment**: Dockerized backend ensures valid environment setup with GPU acceleration out of the box.
 
-## 📦 Included Modules
+## Included Modules
 
 | Module | Engine | Functionality | Status |
 | :--- | :--- | :--- | :--- |
-| **Smart Selector** | **SAM 3 / SAM 1** | Video Object Tracking & Segmentation | video_camera: **Active** |
-| **Sound Studio** | **AudioCraft** | Text-to-Music & Text-to-SFX | :construction: *Coming Soon* |
-| **Footage Gen** | **Make-A-Video** | Text-to-Video Generation | :construction: *Planned* |
-| **Quality Check** | **MovieGen Bench** | Automated Output Quality Scoring | :chart_with_upwards_trend: *Integrated* |
+| **Smart Selector** | **SAM 3 / SAM 1** | Video Object Tracking & Segmentation | **Active** |
+| **Sound Studio** | **AudioCraft** | Text-to-Music & Text-to-SFX | *Coming Soon* |
+| **Footage Gen** | **Make-A-Video** | Text-to-Video Generation | *Planned* |
+| **Quality Check** | **MovieGen Bench** | Automated Output Quality Scoring | *Integrated* |
 
-## 🛠️ Installation
+## Installation
 
 ### Option A: For End-Users (Local Mode)
 1.  Run `install_plugin.bat` to install the Premiere Pro extension.
@@ -51,7 +51,3 @@ Stop juggling multiple repositories. We bring them all together.
 *   **SAM 1**: Apache 2.0 (Commercial Use Allowed).
 *   **SAM 3 / AudioCraft Weights**: **CC-BY-NC 4.0** (Non-Commercial Research Use Only).
     *   *For commercial deployment, please switch the engine configuration to use SAM 1 and train your own AudioCraft models.*
-
----
-
-**Made with ❤️ by Pakuri Dev Team.**
